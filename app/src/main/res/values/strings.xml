@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">DTT Test Application</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello home fragment</string>
-    <string name="hello_info_fragment">Hello info fragment</string>
+    <string name="overview_title">DTT Real Estate</string>
+    <string name="overview_search_text">Search for a home</string>
+
+    <string name="info_about">About</string>
+    <string name="info_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque aliquet velit ac lorem pulvinar, et eleifend nibh luctus. Quisque ac vestibulum neque. Aliquam dolor nisi, sagittis quis ligula eget, rutrum pellentesque mi. Quisque vel nunc sit amet arcu fringilla accumsan. Nunc in maximus risus, eu iaculis odio. Maecenas congue erat quis elit tristique, id suscipit erat finibus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam porttitor eleifend tortor eu congue. Nullam id lacus arcu. Ut erat justo, venenatis sit amet justo vulputate, volutpat malesuada justo. Sed id odio diam. Praesent ac felis ut tortor vulputate venenatis. Fusce et odio placerat, laoreet libero vitae, consectetur lectus. Mauris elit felis, congue ac auctor vel, lobortis sed leo. Duis ut nibh sed neque lobortis tempor. Praesent maximus sollicitudin diam.</string>
+    <string name="info_title_two">Design and Development</string>
+    <string name="info_image_desc">DTT banner image</string>
+    <string name="made_by">by DTT</string>
+    <string name="dtt_url">d-tt.nl</string>
+
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_info">Info</string>
 </resources>
