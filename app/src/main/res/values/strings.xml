@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">DTT Test Application</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello home fragment</string>
+    <string name="hello_info_fragment">Hello info fragment</string>
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_info">Info</string>
+</resources>
