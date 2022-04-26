@@ -1,6 +1,7 @@
 package com.example.dtttestapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHolder> {
 
@@ -33,13 +37,29 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         try {
             HouseCardModel model = houseCardModelArrayList.get(position);
-            holder.house_image.setImageResource(model.getImage());
-            holder.house_price.setText(String.valueOf(model.getPrice()));
-            holder.house_address.setText(model.getAddress());
+
+            Locale usa = new Locale("en", "US");
+            NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(usa);
+            dollarFormat.setMaximumFractionDigits(0);
+
+            new DownloadImageTask(holder.house_image).execute(model.getImage());;
+
+
+            holder.house_price.setText(dollarFormat.format(model.getPrice()));
+            String address = model.getZip() + " " + model.getCity();
+            holder.house_address.setText(address);
             holder.house_bedroom.setText(String.valueOf(model.getBedroom()));
             holder.house_bathroom.setText(String.valueOf(model.getBathroom()));
             holder.house_layers.setText(String.valueOf(model.getLayers()));
-            holder.house_distance.setText(model.getDistance());
+            holder.house_distance.setText(String.valueOf(model.getDistance()));
+            holder.card_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, DetailsActivity.class);
+                    intent.putExtra("model", model);
+                    context.startActivity(intent);
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -53,6 +73,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView house_image;
         private TextView house_price, house_address, house_bedroom, house_bathroom, house_layers, house_distance;
+        private ConstraintLayout card_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,6 +84,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
             house_bathroom = itemView.findViewById(R.id.card_bathroom);
             house_layers = itemView.findViewById(R.id.card_layers);
             house_distance = itemView.findViewById(R.id.card_distance);
+            card_layout = itemView.findViewById(R.id.card_layout);
         }
     }
 }

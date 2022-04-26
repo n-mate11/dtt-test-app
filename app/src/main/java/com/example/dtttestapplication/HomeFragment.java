@@ -1,55 +1,113 @@
 package com.example.dtttestapplication;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import javax.net.ssl.HttpsURLConnection;
 
 public class HomeFragment extends Fragment {
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 
     private static final String api_url = "https://intern.development.d-tt.dev/api/house";
     private static final String api_key = "98bww4ezuzfePCYFxJEWyszbUXc7dxRx";
 
     private RecyclerView recyclerView;
-    private ArrayList<HouseCardModel> houseCardModelArrayList;
+    private EditText editText;
+    private ImageView noResultsImage;
+    private TextView noResultsText;
+    private ArrayList<HouseCardModel> houseCardModelArrayList = new ArrayList<>();
+    private ArrayList<HouseCardModel> filteredList = new ArrayList<>();
+    OverviewAdapter overviewAdapter;
 
-    public HomeFragment(){
-        // require a empty public constructor
-    }
+    LocationRequest mLocationRequest;
+    LocationCallback mLocationCallback;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    Location currentLocation = new Location("currentLocation");
+
+    public HomeFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
         recyclerView = view.findViewById(R.id.overview_list);
+        editText = view.findViewById(R.id.search_field);
+        noResultsImage = view.findViewById(R.id.no_results_image);
+        noResultsText = view.findViewById(R.id.no_results_text);
 
         new MyAsyncTask().execute("");
 
-        houseCardModelArrayList = new ArrayList<>();
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        houseCardModelArrayList.add(new HouseCardModel(45000, "Amsterdam", R.drawable.ic_launcher_background, 2, 1, 1," 45.2"));
-        houseCardModelArrayList.add(new HouseCardModel(12000, "Hilversum", R.drawable.ic_launcher_background, 5, 3, 12, "14.7"));
+            }
 
-        OverviewAdapter overviewAdapter = new OverviewAdapter(view.getContext(), houseCardModelArrayList);
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filteredList.clear();
+
+                if (s.toString().isEmpty()) {
+                    noResultsImage.setVisibility(View.GONE);
+                    noResultsText.setVisibility(View.GONE);
+                    recyclerView.setAdapter(new OverviewAdapter(requireContext(), houseCardModelArrayList));
+                    overviewAdapter.notifyDataSetChanged();
+                } else {
+                    Filter(s.toString());
+                }
+            }
+        });
+
+        overviewAdapter = new OverviewAdapter(view.getContext(), houseCardModelArrayList);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(overviewAdapter);
@@ -57,19 +115,100 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private void Filter(String text) {
+        for (HouseCardModel house : houseCardModelArrayList) {
+            if (house.getCity().toLowerCase().startsWith(text.toLowerCase())) {
+                filteredList.add(house);
+            } else if (house.getZip().toLowerCase().startsWith(text.toLowerCase())) {
+                filteredList.add(house);
+            }
+        }
+
+        if (filteredList.isEmpty() ) {
+            noResultsImage.setVisibility(View.VISIBLE);
+            noResultsText.setVisibility(View.VISIBLE);
+        } else {
+            noResultsImage.setVisibility(View.GONE);
+            noResultsText.setVisibility(View.GONE);
+        }
+
+        recyclerView.setAdapter(new OverviewAdapter(requireContext(), filteredList));
+        overviewAdapter.notifyDataSetChanged();
+    }
+
     class MyAsyncTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            LocationRequest mLocationRequest = LocationRequest.create();
+            mLocationRequest.setInterval(60000);
+            mLocationRequest.setFastestInterval(5000);
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            mLocationCallback = new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    if (locationResult == null) {
+                        System.out.println("locationResult == null");
+                        return;
+                    }
+                    for (Location location : locationResult.getLocations()) {
+                        if (location != null) {
+                            //TODO: UI updates.
+                            System.out.println(location.getLatitude());
+                            System.out.println(location.getLongitude());
+                            currentLocation = location;
+                        }
+                    }
+                }
+            };
+
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext());
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                LocationServices.getFusedLocationProviderClient(requireContext()).requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+                getLastLocation();
+            } else {
+                askLocationPermission();
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            overviewAdapter.notifyDataSetChanged();
+        }
 
         @Override
         protected String doInBackground(String... strings) {
             JSONArray response_body = getDataFromAPI();
             try {
-                for(int i=0; i < response_body.length(); i++)
-                {
+                for(int i = 0; i < response_body.length(); i++) {
                     JSONObject object = response_body.getJSONObject(i);
-                    System.out.println(object.getString("id"));
-                    System.out.println(object.getString("image"));
-                    System.out.println(object.getString("description"));
+
+                    Location houseLocation = new Location("houseLocation");
+                    houseLocation.setLatitude(object.getDouble("latitude"));
+                    houseLocation.setLatitude(object.getDouble("longitude"));
+
+                    double distance = currentLocation.distanceTo(houseLocation) / 1000;
+                    distance = Math.round(distance * 10.0) / 10.0;
+
+                    houseCardModelArrayList.add(new HouseCardModel(
+                                    object.getInt("id"),
+                                    object.getInt("price"),
+                                    object.getString("zip"),
+                                    object.getString("city"),
+                                    object.getString("image"),
+                                    object.getInt("bedrooms"),
+                                    object.getInt("bathrooms"),
+                                    object.getInt("size"),
+                                    object.getString("description"),
+                                    object.getDouble("latitude"),
+                                    object.getDouble("longitude"),
+                                    object.getString("createdDate"),
+                                    distance));
                 }
+
+                Collections.sort(houseCardModelArrayList, new SortByPrice());
             } catch (JSONException jsonException) {
                 jsonException.printStackTrace();
             }
@@ -113,6 +252,58 @@ public class HomeFragment extends Fragment {
             Log.e("MYAPP", "unexpected JSON exception", jsonException);
         }
         return jsonArray;
+    }
+
+    class SortByPrice implements Comparator<HouseCardModel> {
+        public int compare(HouseCardModel a, HouseCardModel b) {
+            return a.getPrice() - b.getPrice();
+        }
+    }
+
+    private void askLocationPermission() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Log.d("LOCATION", "askLocationPermission: you should show an alert dialog...");
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10001);
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 10001);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 10001) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastLocation();
+            } else {
+                // access denied
+            }
+        }
+    }
+
+    private void getLastLocation() {
+        Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    System.out.println(location.getLatitude());
+                    System.out.println(location.getLongitude());
+                    currentLocation = location;
+                } else {
+                    System.out.println("location is null...");
+                }
+            }
+        });
+
+        locationTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println("failure occurred with locationTask...");
+            }
+        });
     }
 }
 
