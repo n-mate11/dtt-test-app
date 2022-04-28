@@ -16,17 +16,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/details_back_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/ic_back"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
             <ImageView
                 android:id="@+id/details_image"
                 android:layout_width="match_parent"
@@ -37,15 +26,26 @@
                 android:contentDescription="@string/details_image"
                 android:scaleType="centerCrop"
                 />
-            <androidx.cardview.widget.CardView
+            <ImageButton
+                android:id="@+id/details_back_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/ic_back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@id/details_image"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_marginTop="-20dp"
-                app:cardCornerRadius="20dp"
-                android:elevation="0dp">
+                android:elevation="0dp"
+                style="@style/CustomCardViewStyle">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -59,8 +59,9 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:fontFamily="@font/gothamssm_bold"
+                        android:textSize="18sp"
+                        android:textColor="?attr/title_color"/>
                     <TextView
                         android:id="@+id/details_bedroom"
                         android:layout_width="wrap_content"
@@ -69,9 +70,11 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:drawableLeftCompat="@drawable/ic_bed"
                         android:gravity="center_vertical"
+                        android:layout_marginEnd="15dp"
                         android:textSize="8sp"
-                        android:textColor="@color/medium"
-                        app:drawableTint="@color/medium" />
+                        android:fontFamily="@font/gothamssm_book"
+                        android:textColor="?attr/details_color"
+                        app:drawableTint="?attr/details_color" />
                     <TextView
                         android:id="@+id/details_bathroom"
                         android:layout_width="wrap_content"
@@ -81,8 +84,10 @@
                         app:drawableLeftCompat="@drawable/ic_bath"
                         android:gravity="center_vertical"
                         android:textSize="8sp"
-                        android:textColor="@color/medium"
-                        app:drawableTint="@color/medium" />
+                        android:fontFamily="@font/gothamssm_book"
+                        android:layout_marginEnd="15dp"
+                        android:textColor="?attr/details_color"
+                        app:drawableTint="?attr/details_color" />
                     <TextView
                         android:id="@+id/details_layers"
                         android:layout_width="wrap_content"
@@ -92,8 +97,10 @@
                         app:drawableLeftCompat="@drawable/ic_layers"
                         android:gravity="center_vertical"
                         android:textSize="8sp"
-                        android:textColor="@color/medium"
-                        app:drawableTint="@color/medium" />
+                        android:fontFamily="@font/gothamssm_book"
+                        android:layout_marginEnd="15dp"
+                        android:textColor="?attr/details_color"
+                        app:drawableTint="?attr/details_color" />
                     <TextView
                         android:id="@+id/details_distance"
                         android:layout_width="wrap_content"
@@ -103,8 +110,9 @@
                         app:drawableLeftCompat="@drawable/ic_location"
                         android:gravity="center_vertical"
                         android:textSize="8sp"
-                        android:textColor="@color/medium"
-                        app:drawableTint="@color/medium" />
+                        android:fontFamily="@font/gothamssm_book"
+                        android:textColor="?attr/details_color"
+                        app:drawableTint="?attr/details_color" />
                     <TextView
                         android:id="@+id/description_header"
                         android:layout_width="wrap_content"
@@ -113,8 +121,9 @@
                         app:layout_constraintTop_toBottomOf="@id/details_price"
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:layout_marginTop="40dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
+                        android:fontFamily="@font/gothamssm_bold"
+                        android:textSize="16sp"
+                        android:textColor="?attr/title_color"/>
                     <TextView
                         android:id="@+id/description_text"
                         android:layout_width="match_parent"
@@ -122,7 +131,9 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/description_header"
                         android:layout_marginTop="20dp"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:fontFamily="@font/gothamssm_book"
+                        android:textColor="?attr/body_color"/>
                     <TextView
                         android:id="@+id/location_header"
                         android:layout_width="wrap_content"
@@ -131,8 +142,9 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         android:text="@string/details_location"
                         android:layout_marginTop="20dp"
-                        android:textStyle="bold"
-                        android:textSize="16sp" />
+                        android:fontFamily="@font/gothamssm_bold"
+                        android:textSize="16sp"
+                        android:textColor="?attr/title_color"/>
 
                     <RelativeLayout
                         android:id="@+id/relativeLayout"
@@ -151,7 +163,7 @@
                             tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
                     </RelativeLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

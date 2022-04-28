@@ -19,8 +19,8 @@
         android:textAlignment="textStart"
         android:textAllCaps="true"
         android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/strong"/>
+        android:fontFamily="@font/gothamssm_bold"
+        android:textColor="?attr/title_color"/>
     <TextView
         android:id="@+id/about_text"
         android:layout_width="match_parent"
@@ -31,7 +31,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:textSize="12sp"
-        android:textColor="@color/medium"/>
+        android:fontFamily="@font/gothamssm_book"
+        android:textColor="?attr/body_color"/>
     <TextView
         android:id="@+id/title_two"
         android:layout_width="wrap_content"
@@ -42,8 +43,8 @@
         android:textAlignment="textStart"
         android:layout_marginTop="30dp"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/strong" />
+        android:fontFamily="@font/gothamssm_bold"
+        android:textColor="?attr/title_color" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -58,7 +59,10 @@
             android:contentDescription="@string/info_image_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/dtt_banner" />
+            android:src="@drawable/dtt_banner"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -73,7 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="@string/made_by"
-                android:textColor="@color/strong"
+                android:textColor="?attr/body_color"
+                android:fontFamily="@font/gothamssm_book"
                 android:textSize="12sp" />
 
             <TextView
@@ -81,7 +86,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:text="@string/dtt_url" />
+                android:fontFamily="@font/gothamssm_book"
+                android:text="@string/dtt_url"
+                android:textSize="12sp"/>
 
         </LinearLayout>
 

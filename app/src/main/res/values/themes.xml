@@ -2,9 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.DTTTestApplication" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/strong</item>
-        <item name="colorPrimaryDark">@color/dark_gray</item>
-        <item name="colorAccent">@color/strong</item>
+<!--        <item name="colorPrimary">@color/strong</item>-->
+<!--        <item name="colorPrimaryDark">@color/dark_gray</item>-->
+<!--        <item name="colorAccent">@color/strong</item>-->
 <!--        <item name="colorPrimaryVariant">@color/purple_700</item>-->
 <!--        <item name="colorOnPrimary">@color/white</item>-->
 <!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
@@ -14,5 +14,19 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <!-- LIGHT MODE -->
+        <item name="background_color">@color/light_gray</item>
+        <item name="card_color">@color/white</item>
+        <item name="title_color">@color/strong</item>
+        <item name="body_color">@color/light</item>
+        <item name="hint_color">@color/medium</item>
+        <item name="details_color">@color/medium</item>
+        <item name="subtitle_color">@color/medium</item>
+        <item name="menu_icon_color">@color/strong</item>
+        <item name="input_color">@color/dark_gray</item>
+        <item name="input_text_color">@color/strong</item>
+        <item name="drawable_input">@drawable/search_field</item>
+        <item name="bottom_nav_item">@drawable/bnv_tab_item</item>
     </style>
 </resources>

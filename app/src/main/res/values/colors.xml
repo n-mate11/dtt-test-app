@@ -7,4 +7,7 @@
     <color name="strong">#CC000000</color>
     <color name="medium">#66000000</color>
     <color name="light">#33000000</color>
+
+    <color name="medium_dark">#3C3C3C</color>
+    <color name="nav_item">#5A5A5A</color>
 </resources>

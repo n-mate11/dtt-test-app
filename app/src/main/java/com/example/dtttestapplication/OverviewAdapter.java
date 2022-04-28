@@ -2,6 +2,7 @@ package com.example.dtttestapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,15 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
 
     private Context context;
     private ArrayList<HouseCardModel> houseCardModelArrayList;
+    private Location currentLocation;
 
     public OverviewAdapter(Context context, ArrayList<HouseCardModel> houseCardModelArrayList) {
         this.context = context;
         this.houseCardModelArrayList = houseCardModelArrayList;
+    }
+
+    public void setLocation(Location location) {
+        this.currentLocation = location;
     }
 
     @NonNull
@@ -51,12 +57,15 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
             holder.house_bedroom.setText(String.valueOf(model.getBedroom()));
             holder.house_bathroom.setText(String.valueOf(model.getBathroom()));
             holder.house_layers.setText(String.valueOf(model.getLayers()));
-            holder.house_distance.setText(String.valueOf(model.getDistance()));
+            String dist = model.getDistance() + " km";
+            holder.house_distance.setText(dist);
             holder.card_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, DetailsActivity.class);
                     intent.putExtra("model", model);
+                    intent.putExtra("latitude", currentLocation.getLatitude());
+                    intent.putExtra("longitude", currentLocation.getLongitude());
                     context.startActivity(intent);
                 }
             });

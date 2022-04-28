@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,9 +56,11 @@ public class HomeFragment extends Fragment {
     private static final String api_url = "https://intern.development.d-tt.dev/api/house";
     private static final String api_key = "98bww4ezuzfePCYFxJEWyszbUXc7dxRx";
 
+    private CircularProgressIndicator circularProgressIndicator;
     private RecyclerView recyclerView;
     private EditText editText;
-    private ImageView noResultsImage;
+    private ImageButton clearSearch;
+    private ImageView searchIcon, noResultsImage;
     private TextView noResultsText;
     private ArrayList<HouseCardModel> houseCardModelArrayList = new ArrayList<>();
     private ArrayList<HouseCardModel> filteredList = new ArrayList<>();
@@ -74,8 +78,11 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        circularProgressIndicator = view.findViewById(R.id.progress_circular);
         recyclerView = view.findViewById(R.id.overview_list);
         editText = view.findViewById(R.id.search_field);
+        searchIcon = view.findViewById(R.id.search_icon);
+        clearSearch = view.findViewById(R.id.search_clear_button);
         noResultsImage = view.findViewById(R.id.no_results_image);
         noResultsText = view.findViewById(R.id.no_results_text);
 
@@ -99,11 +106,23 @@ public class HomeFragment extends Fragment {
                 if (s.toString().isEmpty()) {
                     noResultsImage.setVisibility(View.GONE);
                     noResultsText.setVisibility(View.GONE);
+                    clearSearch.setVisibility(View.GONE);
+                    searchIcon.setVisibility(View.VISIBLE);
                     recyclerView.setAdapter(new OverviewAdapter(requireContext(), houseCardModelArrayList));
                     overviewAdapter.notifyDataSetChanged();
                 } else {
+                    clearSearch.setVisibility(View.VISIBLE);
+                    searchIcon.setVisibility(View.GONE);
                     Filter(s.toString());
                 }
+            }
+        });
+
+        clearSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText.setText("");
+                clearSearch.setVisibility(View.GONE);
             }
         });
 
@@ -137,6 +156,11 @@ public class HomeFragment extends Fragment {
     }
 
     class MyAsyncTask extends AsyncTask<String, Integer, String> {
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            circularProgressIndicator.setProgress(values[0]);
+        }
 
         @Override
         protected void onPreExecute() {
@@ -158,6 +182,7 @@ public class HomeFragment extends Fragment {
                             System.out.println(location.getLatitude());
                             System.out.println(location.getLongitude());
                             currentLocation = location;
+                            overviewAdapter.setLocation(location);
                         }
                     }
                 }

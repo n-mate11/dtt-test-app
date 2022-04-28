@@ -2,6 +2,7 @@ package com.example.dtttestapplication;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.FragmentContainerView;
 
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,12 +30,12 @@ import java.util.Locale;
 
 public class DetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private Button backButton;
+    private AppCompatImageButton backButton;
     private ImageView imageView;
     private TextView priceText, bedText, bathText, layersText, distanceText, descriptionText;
 
     double latitude, longitude;
-    Location currentLocation = new Location("currentLocation");
+    double currentLatitude, currentLongitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,20 +60,21 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
 
         Intent intent = getIntent();
         HouseCardModel model = (HouseCardModel) intent.getSerializableExtra("model");
+        currentLatitude = intent.getDoubleExtra("latitude", -1);
+        currentLongitude = intent.getDoubleExtra("longitude", -1);
 
         Locale usa = new Locale("en", "US");
         NumberFormat dollarFormat = NumberFormat.getCurrencyInstance(usa);
         dollarFormat.setMaximumFractionDigits(0);
 
         new DownloadImageTask(imageView).execute(model.getImage());
-        //currentLocation = new LocationRequest(getApplicationContext(), this).getCurrentLocation();
-        System.out.println("Details getLocation: " + currentLocation.getLatitude() + "," + currentLocation.getLongitude());
 
+        String distance = model.getDistance() + " km";
         priceText.setText(dollarFormat.format(model.getPrice()));
         bedText.setText(String.valueOf(model.getBedroom()));
         bathText.setText(String.valueOf(model.getBathroom()));
         layersText.setText(String.valueOf(model.getLayers()));
-        distanceText.setText(String.valueOf(model.getDistance()));
+        distanceText.setText(distance);
         descriptionText.setText(String.valueOf(model.getDescription()));
 
         latitude = model.getLatitude();
@@ -90,7 +93,7 @@ public class DetailsActivity extends AppCompatActivity implements OnMapReadyCall
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(@NonNull LatLng latLng) {
-                String url = "https://maps.google.com/?saddr=" + 0 + "," + 0 + "&daddr=" + latitude + "," + longitude;
+                String url = "https://maps.google.com/?saddr=" + currentLatitude + "," + currentLongitude + "&daddr=" + latitude + "," + longitude;
                 Intent intentMaps = new Intent(android.content.Intent.ACTION_VIEW,  Uri.parse(url));
                 startActivity(intentMaps);
             }

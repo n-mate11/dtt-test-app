@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="darkTheme">
+        <attr name="background_color" format="color"/>
+        <attr name="card_color" format="color"/>
+        <attr name="title_color" format="color"/>
+        <attr name="body_color" format="color"/>
+        <attr name="hint_color" format="color"/>
+        <attr name="details_color" format="color"/>
+        <attr name="subtitle_color" format="color" />
+        <attr name="menu_icon_color" format="color" />
+        <attr name="input_color" format="color" />
+        <attr name="input_text_color" format="color" />
+        <attr name="bottom_nav_color" format="color" />
+        <attr name="drawable_input" format="reference" />
+        <attr name="bottom_nav_item" format="reference" />
+    </declare-styleable>
+</resources>

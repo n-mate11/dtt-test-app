@@ -12,5 +12,19 @@
 <!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+<!--        DARK MODE-->
+        <item name="background_color">@color/strong</item>
+        <item name="card_color">@color/medium</item>
+        <item name="title_color">@color/white</item>
+        <item name="body_color">@color/white</item>
+        <item name="hint_color">@color/dark_gray</item>
+        <item name="details_color">@color/white</item>
+        <item name="subtitle_color">@color/white</item>
+        <item name="input_color">@color/medium_dark</item>
+        <item name="input_text_color">@color/white</item>
+        <item name="bottom_nav_color">@color/medium</item>
+        <item name="drawable_input">@drawable/search_field_night</item>
+        <item name="bottom_nav_item">@drawable/bnv_tab_item_night</item>
     </style>
 </resources>

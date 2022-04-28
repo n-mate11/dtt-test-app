@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="120dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="22dp"
-    app:cardElevation="3dp"
-
-    app:cardMaxElevation="3dp"
+    android:layout_marginHorizontal="20dp"
+    app:cardElevation="1dp"
+    app:cardMaxElevation="1dp"
     app:cardCornerRadius="20dp"
-    android:background="@color/white">
+    android:background="?attr/card_color">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card_layout"
@@ -25,8 +25,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="visible"
-            app:cardCornerRadius="5dp"
-            >
+            app:cardCornerRadius="5dp">
 
             <ImageView
                 android:id="@+id/card_image"
@@ -44,7 +43,8 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="20dp"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/gothamssm_bold"
+            android:textColor="?attr/title_color"/>
 
         <TextView
             android:id="@+id/card_location"
@@ -52,63 +52,69 @@
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toRightOf="@id/card_image_wrapper"
             app:layout_constraintTop_toBottomOf="@id/card_cost"
-            android:layout_marginStart="20dp" />
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/gothamssm_book"
+            android:textColor="?attr/subtitle_color"/>
 
         <TextView
             android:id="@+id/card_bedroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawablePadding="10dp"
+            android:drawablePadding="5dp"
             app:drawableStartCompat="@drawable/ic_bed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/card_image_wrapper"
             android:layout_marginStart="20dp"
             android:gravity="center_vertical"
             android:textSize="8sp"
-            android:textColor="@color/medium"
-            app:drawableTint="@color/medium" />
+            android:fontFamily="@font/gothamssm_book"
+            android:textColor="?attr/details_color"
+            app:drawableTint="?attr/details_color" />
 
         <TextView
             android:id="@+id/card_bathroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:drawablePadding="10dp"
+            android:drawablePadding="5dp"
             app:drawableStartCompat="@drawable/ic_bath"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/card_bedroom"
             android:gravity="center_vertical"
             android:textSize="8sp"
-            android:textColor="@color/medium"
-            app:drawableTint="@color/medium"/>
+            android:fontFamily="@font/gothamssm_book"
+            android:textColor="?attr/details_color"
+            app:drawableTint="?attr/details_color"/>
 
         <TextView
             android:id="@+id/card_layers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:drawablePadding="10dp"
+            android:drawablePadding="5dp"
             app:drawableStartCompat="@drawable/ic_layers"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/card_bathroom"
             android:gravity="center_vertical"
             android:textSize="8sp"
-            android:textColor="@color/medium"
-            app:drawableTint="@color/medium"/>
+            android:fontFamily="@font/gothamssm_book"
+            android:textColor="?attr/details_color"
+            app:drawableTint="?attr/details_color"/>
 
         <TextView
             android:id="@+id/card_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:drawablePadding="10dp"
+            android:drawablePadding="5dp"
             app:drawableStartCompat="@drawable/ic_location"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/card_layers"
             android:gravity="center_vertical"
             android:textSize="8sp"
-            android:textColor="@color/medium"
-            app:drawableTint="@color/medium" />
+            android:fontFamily="@font/gothamssm_book"
+            android:textColor="?attr/details_color"
+            app:drawableTint="?attr/details_color" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

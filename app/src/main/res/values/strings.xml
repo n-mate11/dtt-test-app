@@ -3,7 +3,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="overview_title">DTT Real Estate</string>
     <string name="search_placeholder">Search for a home</string>
-    <string name="search_button">Search button</string>
+    <string name="search_button">Search icon</string>
+    <string name="search_clear_button">Search clear button</string>
     <string name="no_results">No results found!\nPerhaps try another search?</string>
 
     <string name="card_image">Image of a specific house</string>
